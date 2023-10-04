@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\Models\Income;
 use Carbon\Carbon;
 
 /**
@@ -22,7 +23,7 @@ class IncomeTransformer
     }
 
     /**
-     * @param Category|null $category
+     * @param Income|null $category
      * @return array
      */
     public static function transform($income)
