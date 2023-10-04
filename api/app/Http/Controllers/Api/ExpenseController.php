@@ -30,7 +30,7 @@ class ExpenseController extends Controller
         $resources = $this->expenseRepo->all();
 
         return response()->json([
-            'message' => 'Incomes records',
+            'message' => 'Expenses records',
             'data' => ExpenseTransformer::transformCollection($resources),
         ], 201);
     }
@@ -52,7 +52,7 @@ class ExpenseController extends Controller
         $resource = $this->expenseRepo->store($attributes);
 
         return response()->json([
-            'message' => 'Income created successfully',
+            'message' => 'Expense created successfully',
             'data' => ExpenseTransformer::transform($resource),
         ], 201);
     }
@@ -85,7 +85,7 @@ class ExpenseController extends Controller
         $attributes = $request->only(['month', 'amount', 'name']);
 
         if ($this->expenseRepo->checkExpenseExists($attributes)) {
-            return response()->json(['errors' => ['name' => ['The Eexpense already exists']]], 404);
+            return response()->json(['errors' => ['name' => ['The expense already exists']]], 404);
         }
 
         $resource = $this->expenseRepo->update($attributes, $expense);
