@@ -1,42 +1,92 @@
 <script lang="ts" setup>
-import { useAuthStore } from '~/stores/useAuthStore';
+import { useAuthStore } from "~/stores/useAuthStore";
 
 definePageMeta({
-  middleware: ['guest']
+  middleware: ["guest"],
+  layout: "guest",
 });
 
-const form = ref({
+const loginForm = ref({
   email: "test@example.com",
   password: "password",
+  errors: {
+    email: "",
+    password: "",
+  },
 });
+
+let submittingForm = ref(false);
 
 const auth = useAuthStore();
 
 async function handleLogin() {
-  if (auth.isLoggedIn) {
-    return navigateTo("/")
-  };
+  submittingForm.value = true;
 
-  const { error } = await auth.login(form.value);
+  if (auth.isLoggedIn) {
+    return navigateTo("/");
+  }
+
+  const { error } = await auth.login(loginForm.value);
+  loginForm.value.errors = error.value?.data.errors;
+
+  submittingForm.value = false;
 
   if (!error.value) {
-    return navigateTo("/")
-  };
+    return navigateTo("/");
+  }
 }
 </script>
 
 <template>
   <form @submit.prevent="handleLogin">
-    <label for="email">
-      Email
-      <input type="text" v-model="form.email" />
-    </label>
+    <div class="card">
+      <!-- welcome Message -->
+      <h2 class="text-2xl text-center font-normal mb-6 text-90">
+        Welcome Back!
+      </h2>
 
-    <label>
-      Password
-      <input type="password" v-model="form.password" />
-    </label>
+      <!-- divider -->
+      <div class="bg-gray-300 h-px w-24 mx-auto mb-6"></div>
 
-    <button>Login</button>
+      <!-- Email Input -->
+      <div class="mb-4">
+        <icon-input
+          label="Email Address"
+          v-model="loginForm.email"
+          id="email"
+          placeholder="name@flowbite.com"
+          :error="loginForm.errors.email"
+        >
+          <!-- icon -->
+          mail
+        </icon-input>
+      </div>
+
+      <!-- Password Input -->
+      <div class="mb-6">
+        <icon-input-password
+          label="Password"
+          v-model="loginForm.password"
+          id="password"
+          :error="loginForm.errors.password"
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn w-full p-3.5 font-bold uppercase tracking-widest mb-6"
+        :disabled="submittingForm"
+      >
+        Login
+      </button>
+
+      <!-- Redirect To Register -->
+      <p
+        class="w-full text-center font-medium text-xs capitalize hover:underline"
+      >
+        <nuxt-link to="/register">Don't have an account?</nuxt-link>
+      </p>
+    </div>
   </form>
 </template>

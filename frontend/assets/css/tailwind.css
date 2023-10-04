@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+body {
+	@apply bg-gray-50 text-[#333333];
+	font-family: 'Montserrat', sans-serif;
+}
+
+@layer components {
+	a {
+		@apply text-primary;
+	}
+
+	.btn {
+		@apply bg-primary text-white px-3 py-2 rounded-md text-sm;
+	}
+
+	.card {
+		@apply p-8 rounded-md bg-white shadow-md h-full min-w-[500px];
+	}
+}
+
