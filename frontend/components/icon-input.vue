@@ -22,10 +22,10 @@ const updateValue = (event) => {
 
 <template>
   <div>
-    <label :for="inputId" class="font-semibold text-xs">{{ label }} </label>
+    <label :for="inputId" class="font-semibold text-xs capitalize">{{ label }} </label>
     <div class="relative">
       <div
-        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+        class="absolute top-1/2 bottom-1/2 left-0 flex items-center pl-3 pointer-events-none"
       >
         <span class="w-5 h-5">
           <!-- icon slot -->
@@ -37,7 +37,7 @@ const updateValue = (event) => {
         @input="updateValue"
         :type="typeVal"
         :id="inputId"
-        class="border border-gray-300 text-sm rounded focus:outline-primary block w-full pl-10 p-3.5"
+        class="border border-gray-300 placeholder:text-gray-300 text-sm rounded focus:outline-primary block w-full pl-10 p-3"
         :placeholder="placeholder"
         :disabled="disabled"
         :class="{ 'bg-gray-200': disabled }"

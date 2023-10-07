@@ -114,7 +114,7 @@ async function handleRegister() {
       <p
         class="w-full text-center font-medium text-xs capitalize hover:underline"
       >
-        <nuxt-link to="/login">have an account?</nuxt-link>
+        <nuxt-link to="/login">already registered?</nuxt-link>
       </p>
     </div>
   </form>

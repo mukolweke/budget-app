@@ -20,7 +20,7 @@ async function handleLogout() {
           <ul>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md transition duration-150 flex items-center"
+                class="p-3 rounded-md flex items-center transition-all duration-100"
                 to="/"
               >
                 <span class="material-symbols-outlined mr-2"> home </span>
@@ -29,7 +29,7 @@ async function handleLogout() {
             </li>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md transition duration-150 flex items-center"
+                class="p-3 rounded-md flex items-center transition-all duration-100"
                 to="/income"
               >
                 <span class="material-symbols-outlined mr-2">
@@ -40,16 +40,7 @@ async function handleLogout() {
             </li>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md transition duration-150 flex items-center"
-                to="/savings"
-              >
-                <span class="material-symbols-outlined mr-2"> savings </span>
-                Savings
-              </nuxt-link>
-            </li>
-            <li class="mb-6 font-semibold w-full">
-              <nuxt-link
-                class="p-3 rounded-md transition duration-150 flex items-center"
+                class="p-3 rounded-md flex items-center transition-all duration-100"
                 to="/expenses"
               >
                 <span class="material-symbols-outlined mr-2">
@@ -59,8 +50,36 @@ async function handleLogout() {
               </nuxt-link>
             </li>
             <li class="mb-6 font-semibold w-full">
+              <nuxt-link
+                class="p-3 rounded-md flex items-center transition-all duration-100"
+                to="/savings"
+              >
+                <span class="material-symbols-outlined mr-2"> savings </span>
+                Savings
+              </nuxt-link>
+            </li>
+            <li class="mb-6 font-semibold w-full">
+              <nuxt-link
+                class="p-3 rounded-md flex items-center transition-all duration-100"
+                to=""
+              >
+                <span class="material-symbols-outlined mr-2"> target </span>
+                Goals
+              </nuxt-link>
+            </li>
+            <li class="mb-6 font-semibold w-full">
+              <nuxt-link
+                class="p-3 rounded-md flex items-center transition-all duration-100"
+                to=""
+              >
+                <span class="material-symbols-outlined mr-2"> settings </span>
+                <!-- section we will add currency -->
+                Settings
+              </nuxt-link>
+            </li>
+            <li class="mb-6 font-semibold w-full">
               <button
-                class="btn w-full text-left text-primary flex items-center p-3 bg-transparent hover:bg-gray-100 focus:text-primary"
+                class="btn shadow-none justify-start w-full text-primary flex items-center p-3 bg-transparent hover:bg-gray-100 focus:text-primary"
                 v-if="auth.isLoggedIn"
                 @click="handleLogout"
               >

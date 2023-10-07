@@ -5,8 +5,19 @@ definePageMeta({
 </script>
 
 <template>
-  <div>Income Page</div>
-</template>
+  <div>
+    <page-header></page-header>
 
-<style lang="scss" scoped>
-</style>
+    <div class="pt-10">
+      <!-- Create Action -->
+      <!-- <div>
+        <button class="btn px-5 font-bold" @click="toggleModal">Create</button>
+      </div>
+
+       -->
+
+      <!-- List Incomes -->
+      <module-listing name="income"></module-listing>
+    </div>
+  </div>
+</template>

@@ -28,5 +28,3 @@ const timeOfDay = computed(() => {
     <p>Here's summary of this months budget</p>
   </div>
 </template>
-
-<style scoped></style>

@@ -17,6 +17,15 @@
       </nuxt-link>
 
       <ul class="flex items-center gap-4">
+        <li class="flex items-center">
+          <span class="material-symbols-outlined text-primary mr-2">
+            account_balance_wallet
+          </span>
+          <span class="text-sm">
+            Left To Spend:
+            <span class="font-bold ml-1 tracking-wider">3,000.00 KES</span>
+          </span>
+        </li>
         <li>
           <span class="hover:text-primary p-2.5 rounded-full cursor-pointer">
             <span class="material-symbols-outlined"> notifications </span>
