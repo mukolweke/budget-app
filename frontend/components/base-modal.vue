@@ -12,7 +12,7 @@ defineEmits(["close-modal", "confirm-modal"]);
     <transition name="modal-outer">
       <div
         v-if="modalActive"
-        class="absolute bottom-0 right-0 left-0 h-screen bg-black bg-opacity-30 flex justify-center px-8"
+        class="fixed bottom-0 right-0 left-0 h-screen bg-black bg-opacity-30 flex justify-center px-8"
       >
         <transition name="modal-inner">
           <div

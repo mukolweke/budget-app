@@ -4,18 +4,18 @@ const currentMonth = currentDate.getMonth();
 const currentYear = currentDate.getFullYear();
 
 const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dec",
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "may",
+  "jun",
+  "jul",
+  "aug",
+  "sept",
+  "oct",
+  "nov",
+  "dec",
 ];
 
 let activeMonth = ref(currentMonth);
@@ -26,22 +26,68 @@ const props = defineProps({
 
 let modalActive = ref(false);
 
-const toggleModal = () => (modalActive.value = !modalActive.value);
-
-const moduleForm = ref({
+let moduleForm = ref({
   name: "",
   amount: "",
-  module: props.name,
   month: "",
-  errors: {
-    name: "",
-    amount: "",
-  },
+  errors: {},
 });
 
-const handleConfirm = () => {
-    console.log('moduleForm', moduleForm.value);
+const toggleModal = () => modalActive.value = !modalActive.value;
+
+watch(modalActive, (value) => {
+  if (!value) {
+    moduleForm.value = {
+      name: "",
+      amount: "",
+      month: "",
+      errors: {},
+    }
+  }
+})
+
+let submittingForm = ref(false);
+
+async function saveModule(form) {
+  return await useApiFetch(`/api/${props.name}`, {
+    method: 'POST',
+    body: form,
+  })
 }
+
+let moduleData = ref(null);
+
+async function getModuleData() {
+  await useApiFetch('/sanctum/csrf-cookie')
+
+  const { data } = await useApiFetch(`/api/${props.name}`, {});
+
+  moduleData.value = data.value.data;
+}
+
+let filteredModuleData = computed(() => {
+    console.log(months[activeMonth.value]);
+  return moduleData.value ? moduleData.value.filter((datum) => datum.month.startsWith(months[activeMonth.value])) : []
+})
+
+const handleConfirm = async () => {
+  submittingForm.value = true;
+
+  const { error } = await saveModule(moduleForm.value);
+
+  if (!error.value) {
+    toggleModal();
+    getModuleData();
+  };
+
+  moduleForm.value.errors = error.value?.data.errors;
+
+  submittingForm.value = false;
+}
+
+onMounted(() => {
+  getModuleData();
+})
 </script>
 
 <template>
@@ -93,6 +139,7 @@ const handleConfirm = () => {
                 :label="name + ' Amount:'"
                 v-model="moduleForm.amount"
                 id="amount"
+                type-val="number"
                 placeholder="2000.00"
                 :error="moduleForm.errors.amount"
               >
@@ -147,16 +194,21 @@ const handleConfirm = () => {
             <tr>
               <th class="py-2 px-4">Name</th>
               <th class="py-2 px-4">Amount</th>
+              <th class="py-2 px-4">Month</th>
+              <th class="py-2 px-4">Created</th>
+              <th class="py-2 px-4">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="mb-4">
-              <td class="py-2 px-4">John Doe</td>
-              <td class="py-2 px-4">30</td>
-            </tr>
-            <tr class="mb-4">
-              <td class="py-2 px-4">Jane Smith</td>
-              <td class="py-2 px-4">25</td>
+            <tr
+              class="mb-4"
+              v-for="(datum, index) in filteredModuleData"
+              :key="index"
+            >
+              <td class="py-6 px-4">{{ datum.name }}</td>
+              <td class="py-6 px-4">{{ datum.amount }}</td>
+              <td class="py-6 px-4">{{ datum.month }}</td>
+              <td class="py-6 px-4">{{ datum.created_on }}</td>
             </tr>
           </tbody>
         </table>
