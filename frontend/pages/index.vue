@@ -17,12 +17,12 @@ const summaries = [
     icon: "attach_money",
   },
   {
-    name: "Expense",
+    name: "Expenses",
     amount: "100000",
     icon: "shopping_cart_checkout",
   },
   {
-    name: "Saving",
+    name: "Savings",
     amount: "90000",
     icon: "savings",
   },
@@ -71,6 +71,33 @@ const loans = [
 ];
 
 let activeTab = ref("assets");
+
+const goals = [
+  {
+    title: "Come up with passive income ideas",
+    done: true,
+  },
+  {
+    title: "Have an emergency fund 300,000",
+    done: false,
+  },
+  {
+    title: "Save for holiday 70,000",
+    done: false,
+  },
+  {
+    title: "Join the gym",
+    done: false,
+  },
+  {
+    title: "Learn to swim",
+    done: false,
+  },
+  {
+    title: "Open a business",
+    done: true,
+  },
+];
 </script>
 
 <template>
@@ -150,7 +177,29 @@ let activeTab = ref("assets");
           </div>
         </div>
       </div>
-      <div class="card w-1/3">Goals {{ currentYear }}</div>
+      <div class="card w-1/3">
+        <h4 class="font-semibold text-xl mb-4 text-onyx-lighter">
+          Goals {{ currentYear }}
+        </h4>
+
+        <ul class="max-h-[350px] overflow-auto">
+          <li
+            class="pt-2 px-1 m-0 rounded transition duration-100 cursor-pointer hover:bg-gray-100 hover:text-primary text-onyx-lightest font-medium whitespace-nowrap"
+            v-for="(goal, index) in goals"
+            :key="index"
+          >
+            <span v-if="goal.done" class="material-symbols-outlined mr-2 text-primary">
+              check_circle
+            </span>
+            <span v-if="!goal.done" class="material-symbols-outlined mr-2 text-red-500">
+              cancel
+            </span>
+            <span class="w-full overflow-hidden text-ellipsis inline-block">
+              {{ goal.title }}
+            </span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

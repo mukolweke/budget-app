@@ -19,7 +19,7 @@ const formattedNumber = (amount) => {
 
 
 <template>
-  <div class="card w-1/3">
+  <NuxtLink :to="'/' + summary.name" class="card hover:shadow-lg w-1/3">
     <div class="flex items-start justify-between mb-2">
       <h4 class="text-gray-400 font-medium text-sm">
         Total {{ summary.name }}
@@ -37,5 +37,5 @@ const formattedNumber = (amount) => {
     <h4 class="font-medium text-onyx-lighter text-2xl">
       KES {{ formattedNumber(summary.amount) }}
     </h4>
-  </div>
+  </NuxtLink>
 </template>
