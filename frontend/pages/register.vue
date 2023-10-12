@@ -45,7 +45,7 @@ async function handleRegister() {
 
 <template>
   <form @submit.prevent="handleRegister">
-    <div class="card">
+    <div class="card w-[500px]">
       <!-- welcome Message -->
       <h2 class="text-2xl text-center font-normal mb-6 text-90">Welcome!</h2>
 

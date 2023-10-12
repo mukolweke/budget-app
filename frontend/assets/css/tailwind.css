@@ -33,6 +33,6 @@ body {
 	}
 
 	.card {
-		@apply p-8 rounded-md bg-white shadow-md h-full min-w-[500px];
+		@apply p-8 rounded-md bg-white shadow-md h-full;
 	}
 }
