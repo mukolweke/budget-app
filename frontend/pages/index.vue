@@ -10,23 +10,56 @@ const auth = useAuthStore();
 
 const { months, currentMonth, timeOfDay, currentYear } = useDateMixin();
 
-const summaries = [
-  {
-    name: "Income",
-    amount: "200000",
-    icon: "attach_money",
-  },
-  {
-    name: "Expenses",
-    amount: "100000",
-    icon: "shopping_cart_checkout",
-  },
-  {
-    name: "Savings",
-    amount: "90000",
-    icon: "savings",
-  },
-];
+interface SummaryItem {
+  name: string;
+  icon: string;
+  amount: string;
+}
+
+type SummaryType = {
+  total_income: number;
+  total_expense: number;
+  total_saving: number;
+};
+
+// Create a ref for the summary data
+const summaryAmounts = ref<SummaryType>();
+
+// Create a computed property for the summary items
+const summaries = computed<SummaryItem[]>(() => {
+  return summaryAmounts.value
+    ? [
+        {
+          name: "Income",
+          icon: "attach_money",
+          amount: (summaryAmounts.value.total_income ?? "").toString(),
+        },
+        {
+          name: "Expenses",
+          icon: "shopping_cart_checkout",
+          amount: (summaryAmounts.value.total_expense ?? "").toString(),
+        },
+        {
+          name: "Savings",
+          icon: "savings",
+          amount: (summaryAmounts.value.total_saving ?? "").toString(),
+        },
+      ]
+    : [];
+});
+
+onMounted(() => {
+  getSummaryData();
+});
+
+// Fetch the summary data
+async function getSummaryData() {
+  await useApiFetch("/sanctum/csrf-cookie");
+
+  const { data } = await useApiFetch(`/api/dash-summary`, {});
+
+  summaryAmounts.value = data.value as SummaryType;
+}
 
 const assets = [
   {
@@ -188,10 +221,16 @@ const goals = [
             v-for="(goal, index) in goals"
             :key="index"
           >
-            <span v-if="goal.done" class="material-symbols-outlined mr-2 text-primary">
+            <span
+              v-if="goal.done"
+              class="material-symbols-outlined mr-2 text-primary"
+            >
               check_circle
             </span>
-            <span v-if="!goal.done" class="material-symbols-outlined mr-2 text-red-500">
+            <span
+              v-if="!goal.done"
+              class="material-symbols-outlined mr-2 text-red-500"
+            >
               cancel
             </span>
             <span class="w-full overflow-hidden text-ellipsis inline-block">

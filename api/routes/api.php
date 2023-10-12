@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\IncomeController;
 use App\Http\Controllers\Api\SavingController;
@@ -27,4 +28,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/expense', ExpenseController::class);
 
     Route::apiResource('/saving', SavingController::class);
+
+    Route::get('/dash-summary', [DashboardController::class, 'summary']);
 });
