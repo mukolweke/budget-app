@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { format } from 'date-fns'
 
 export function useDateMixin() {
 	const currentDate = new Date()
@@ -33,11 +34,14 @@ export function useDateMixin() {
 		}
 	})
 
+	const currentDateTime = format(currentDate, 'dd, MMM yyyy hh:mm a')
+
 	return {
 		currentMonth,
 		months,
 		currentYear,
 		activeMonth,
 		timeOfDay,
+		currentDateTime,
 	}
 }

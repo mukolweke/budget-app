@@ -35,9 +35,10 @@ class ExpenseRepository
      *
      * @param  Array  $attributes
      */
-    public function update($attributes, Expense $income)
+    public function update($attributes, Expense $expense)
     {
-        return $income->update($attributes);
+        unset($attributes['id']);
+        return $expense->update($attributes);
     }
 
     /**

@@ -6,9 +6,7 @@ definePageMeta({
 
 <template>
   <div>
-    <div class="pb-10">
-      <!-- List Incomes -->
-      <module-listing name="income"></module-listing>
-    </div>
+    <!-- List Incomes -->
+    <module-listing name="income"></module-listing>
   </div>
 </template>

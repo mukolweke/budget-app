@@ -96,7 +96,7 @@ class IncomeController extends Controller
         }
 
         return response()->json([
-            'message' => 'Income created successfully',
+            'message' => 'Income updated successfully',
             'data' => IncomeTransformer::transform($income->fresh()),
         ], 201);
     }

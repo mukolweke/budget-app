@@ -95,7 +95,7 @@ class ExpenseController extends Controller
         }
 
         return response()->json([
-            'message' => 'Expense created successfully',
+            'message' => 'Expense updated successfully',
             'data' => ExpenseTransformer::transform($expense->fresh()),
         ], 201);
     }

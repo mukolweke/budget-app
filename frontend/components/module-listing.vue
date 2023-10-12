@@ -2,7 +2,7 @@
 import numeral from 'numeral';
 import { useDateMixin } from "~/mixins/dateMixin";
 
-const { months, currentMonth, currentYear, activeMonth } = useDateMixin();
+const { months, currentMonth, currentYear, activeMonth, currentDateTime } = useDateMixin();
 
 let activeRecord = ref({});
 
@@ -97,6 +97,10 @@ async function getModuleData() {
 // Filter out the data when listing by active month
 let filteredModuleData = computed(() => {
   return moduleData.value ? moduleData.value.filter((datum) => datum.month.startsWith(months[activeMonth.value])) : []
+});
+
+let getTotalValue = computed(() => {
+  return filteredModuleData.value.reduce((total, item) => total + item.amount, 0);
 })
 
 // Handle the delete action
@@ -113,7 +117,7 @@ const handleDeleteConfirm = async () => {
 const handleConfirm = async () => {
   submittingForm.value = true;
 
-  const { error } = await saveModule(activeRecord.value);
+  const { error } = await saveModule(moduleForm.value);
 
   if (!error.value) {
     toggleModal();
@@ -136,7 +140,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="mb-10">
+    <div class="my-10">
       <base-modal
         :title="(activeRecord.id ? 'Edit ' : 'Add ') + name"
         :modal-active="modalActive"
@@ -328,6 +332,22 @@ onMounted(() => {
                   </span>
                 </div>
               </td>
+            </tr>
+            <tr>
+              <td class="py-6 px-4"></td>
+              <td class="py-6 px-4">
+                <p class="font-bold">Total</p>
+              </td>
+              <td class="py-6 px-4">
+                <p class="font-bold">KES {{ formattedNumber(getTotalValue) }}</p>
+              </td>
+              <td class="py-6 px-4">
+                <p class="font-bold">{{ currentDateTime }}</p>
+              </td>
+              <td class="py-6 px-4">
+                <p class="font-bold">{{ currentDateTime }}</p>
+              </td>
+              <td class="py-6 px-4"></td>
             </tr>
           </tbody>
         </table>

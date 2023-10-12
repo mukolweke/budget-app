@@ -37,6 +37,7 @@ class IncomeRepository
      */
     public function update($attributes, Income $income)
     {
+        unset($attributes['id']);
         return $income->update($attributes);
     }
 

@@ -96,7 +96,7 @@ class SavingController extends Controller
         }
 
         return response()->json([
-            'message' => 'Saving created successfully',
+            'message' => 'Saving updated successfully',
             'data' => SavingTransformer::transform($saving->fresh()),
         ], 201);
     }

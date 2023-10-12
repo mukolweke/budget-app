@@ -39,6 +39,7 @@ class SavingRepository
      */
     public function update($attributes, Saving $saving)
     {
+        unset($attributes['id']);
         return $saving->update($attributes);
     }
 

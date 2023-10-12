@@ -6,10 +6,8 @@ definePageMeta({
 
 <template>
   <div>
-    <div class="pt-10">
-      <!-- List Savings -->
-      <module-listing name="saving"></module-listing>
-    </div>
+    <!-- List Savings -->
+    <module-listing name="saving"></module-listing>
   </div>
 </template>
 
