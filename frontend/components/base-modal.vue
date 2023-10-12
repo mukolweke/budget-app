@@ -2,6 +2,7 @@
 defineProps({
   modalActive: Boolean,
   title: String,
+  hideButtons: Boolean,
 });
 
 defineEmits(["close-modal", "confirm-modal"]);
@@ -38,11 +39,20 @@ defineEmits(["close-modal", "confirm-modal"]);
             </div>
 
             <!-- Modal action -->
-            <div class="flex items-center justify-end space-x-4 z-0">
-              <button class="py-2 px-6 btn-alt" @click="$emit('close-modal')">
+            <div
+              v-if="!hideButtons"
+              class="flex items-center justify-end space-x-4 z-0"
+            >
+              <button
+                class="py-2 font-medium px-6 btn-alt"
+                @click="$emit('close-modal')"
+              >
                 Close
               </button>
-              <button class="py-2 px-6 btn" @click="$emit('confirm-modal')">
+              <button
+                class="py-2 font-medium px-6 btn"
+                @click="$emit('confirm-modal')"
+              >
                 Save
               </button>
             </div>

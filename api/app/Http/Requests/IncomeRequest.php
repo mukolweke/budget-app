@@ -22,6 +22,7 @@ class IncomeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => '',
             'name' => 'required|string',
             'month' => 'required|string',
             'amount' => 'required',

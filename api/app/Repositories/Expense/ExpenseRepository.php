@@ -47,8 +47,13 @@ class ExpenseRepository
      */
     public function checkExpenseExists($attributes)
     {
-        return Expense::where('month', $attributes['month'])
-            ->where('name', $attributes['name'])
-            ->exists();
+        $query = Expense::where('month', $attributes['month'])
+            ->where('name', $attributes['name']);
+
+        if (isset($attributes['id'])) {
+            $query = $query->where('id', '!=', $attributes['id']);
+        }
+
+        return $query->exists();
     }
 }

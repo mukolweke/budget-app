@@ -60,7 +60,7 @@ class ExpenseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Income  $income
+     * @param  \App\Models\Expense  $income
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -76,23 +76,27 @@ class ExpenseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  ExpenseRequest  $request
-     * @param  \App\Models\Income  $income
+     * @param  \App\Models\Expense  $income
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(ExpenseRequest $request, Expense $expense)
     {
-        $attributes = $request->only(['month', 'amount', 'name']);
+        $attributes = $request->only(['id', 'month', 'amount', 'name']);
 
         if ($this->expenseRepo->checkExpenseExists($attributes)) {
             return response()->json(['errors' => ['name' => ['The expense already exists']]], 404);
         }
 
-        $resource = $this->expenseRepo->update($attributes, $expense);
+        $updated = $this->expenseRepo->update($attributes, $expense);
+
+        if (!$updated) {
+            return response()->json(['errors' => ['name' => ['Unable to update expense record']]], 404);
+        }
 
         return response()->json([
             'message' => 'Expense created successfully',
-            'data' => ExpenseTransformer::transform($resource),
+            'data' => ExpenseTransformer::transform($expense->fresh()),
         ], 201);
     }
 

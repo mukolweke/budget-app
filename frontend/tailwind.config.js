@@ -2,7 +2,7 @@ module.exports = {
     content: [
         "./**/*.vue",
     ],
-    important: true,
+    // important: true,
     theme: {
         extend: {
             colors: {

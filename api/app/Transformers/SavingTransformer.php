@@ -33,8 +33,8 @@ class SavingTransformer
             'name'          => $saving->name,
             'month'         => $saving->month,
             'amount'        => $saving->amount,
-            'created on'    => Carbon::parse($saving->created_at)->format('d-m-Y'),
-            'updated on'    => Carbon::parse($saving->updated_at)->format('d-m-Y'),
+            'created_on'    => Carbon::parse($saving->created_at)->format('d-m-Y g:i A'),
+            'updated_on'    => Carbon::parse($saving->updated_at)->format('d-m-Y g:i A'),
         ];
     }
 }

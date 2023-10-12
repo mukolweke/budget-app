@@ -83,17 +83,21 @@ class SavingController extends Controller
      */
     public function update(SavingRequest $request, Saving $saving)
     {
-        $attributes = $request->only(['month', 'amount', 'name']);
+        $attributes = $request->only(['id', 'month', 'amount', 'name']);
 
         if ($this->savingRepo->checkSavingExists($attributes)) {
             return response()->json(['errors' => ['name' => ['The saving already exists']]], 404);
         }
 
-        $resource = $this->savingRepo->update($attributes, $saving);
+        $updated = $this->savingRepo->update($attributes, $saving);
+
+        if (!$updated) {
+            return response()->json(['errors' => ['name' => ['Unable to update saving record']]], 404);
+        }
 
         return response()->json([
             'message' => 'Saving created successfully',
-            'data' => SavingTransformer::transform($resource),
+            'data' => SavingTransformer::transform($saving->fresh()),
         ], 201);
     }
 

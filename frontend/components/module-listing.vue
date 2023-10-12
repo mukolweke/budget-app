@@ -1,40 +1,68 @@
 <script setup>
+import numeral from 'numeral';
+
 const currentDate = new Date();
 const currentMonth = currentDate.getMonth();
 const currentYear = currentDate.getFullYear();
 
 const months = [
-  "jan",
-  "feb",
-  "mar",
-  "apr",
+  "january",
+  "february",
+  "march",
+  "april",
   "may",
-  "jun",
-  "jul",
-  "aug",
-  "sept",
-  "oct",
-  "nov",
-  "dec",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
 ];
 
 let activeMonth = ref(currentMonth);
+let activeRecord = ref({});
 
 const props = defineProps({
   name: String,
 })
 
 let modalActive = ref(false);
+let modalDelActive = ref(false);
 
+// Form To Create/Edit Module(Income, Savings, Expenses)
 let moduleForm = ref({
   name: "",
   amount: "",
-  month: "",
+  month: months[activeMonth.value],
   errors: {},
 });
 
-const toggleModal = () => modalActive.value = !modalActive.value;
+// Toggle Manage Module Modal
+const toggleModal = () => {
+  activeRecord.value = {}
+  moduleForm.value.month = activeMonth.value >= currentMonth ? months[activeMonth.value] : months[currentMonth]
+  modalActive.value = !modalActive.value
+};
 
+// Toggle Delete Module Modal
+const toggleDelModal = (datum) => {
+  activeRecord.value = datum;
+  modalDelActive.value = !modalDelActive.value
+};
+
+// Toggle Edit Module Modal - Setting values
+const toggleEditModal = (datum) => {
+  activeRecord.value = datum;
+  moduleForm.value.id = datum.id;
+  moduleForm.value.name = datum.name;
+  moduleForm.value.salary = datum.salary;
+  moduleForm.value.amount = datum.amount;
+  moduleForm.value.month = datum.month;
+  modalActive.value = !modalActive.value
+};
+
+// Reset the form values
 watch(modalActive, (value) => {
   if (!value) {
     moduleForm.value = {
@@ -48,32 +76,61 @@ watch(modalActive, (value) => {
 
 let submittingForm = ref(false);
 
+// Saving/Update module method
 async function saveModule(form) {
-  return await useApiFetch(`/api/${props.name}`, {
-    method: 'POST',
+  await useApiFetch('/sanctum/csrf-cookie');
+
+  let url = form.id ? `/api/${props.name}/${form.id}` : `/api/${props.name}`;
+
+  return await useApiFetch(url, {
+    method: form.id ? 'PATCH' : 'POST',
     body: form,
-  })
+  });
+}
+
+// Delete module method
+async function deleteModule(record) {
+  await useApiFetch('/sanctum/csrf-cookie');
+
+  return await useApiFetch(`/api/${props.name}/${record.id}`, {
+    method: 'DELETE',
+  });
 }
 
 let moduleData = ref(null);
+let fetchingData = ref(false);
 
+// Fetch the module data/listing
 async function getModuleData() {
+  fetchingData.value = true;
   await useApiFetch('/sanctum/csrf-cookie')
 
   const { data } = await useApiFetch(`/api/${props.name}`, {});
 
   moduleData.value = data.value.data;
+  fetchingData.value = false;
 }
 
+// Filter out the data when listing by active month
 let filteredModuleData = computed(() => {
-    console.log(months[activeMonth.value]);
   return moduleData.value ? moduleData.value.filter((datum) => datum.month.startsWith(months[activeMonth.value])) : []
 })
 
+// Handle the delete action
+const handleDeleteConfirm = async () => {
+  const { error } = await deleteModule(activeRecord.value);
+
+  if (!error.value) {
+    toggleDelModal();
+    getModuleData();
+  };
+};
+
+// Handle create/edit actions
 const handleConfirm = async () => {
   submittingForm.value = true;
 
-  const { error } = await saveModule(moduleForm.value);
+  const { error } = await saveModule(activeRecord.value);
 
   if (!error.value) {
     toggleModal();
@@ -85,6 +142,10 @@ const handleConfirm = async () => {
   submittingForm.value = false;
 }
 
+const formattedNumber = (amount) => {
+  return numeral(amount).format('0,0.00');
+}
+
 onMounted(() => {
   getModuleData();
 })
@@ -93,17 +154,8 @@ onMounted(() => {
 <template>
   <div>
     <div class="mb-10">
-      <div class="flex items-center justify-between mb-6">
-        <h4 class="text-xl font-bold text-primary">
-          {{ currentYear }}
-        </h4>
-        <button class="btn capitalize" @click="toggleModal">
-          Add {{ name }} <span class="material-symbols-outlined"> add </span>
-        </button>
-      </div>
-
       <base-modal
-        :title="'Add ' + name"
+        :title="(activeRecord.id ? 'Edit ' : 'Add ') + name"
         :modal-active="modalActive"
         @close-modal="toggleModal"
         @confirm-modal="handleConfirm"
@@ -152,6 +204,7 @@ onMounted(() => {
             <div class="mb-4">
               <month-picker
                 :label="name + ' Month:'"
+                :current-month="currentMonth"
                 v-model="moduleForm.month"
                 id="month"
                 placeholder="Select Month"
@@ -162,26 +215,88 @@ onMounted(() => {
         </div>
       </base-modal>
 
-      <ul class="flex items-center justify-between">
-        <li
-          v-for="(month, index) in months"
-          :key="month"
-          class="uppercase cursor-pointer px-2 transition-all duration-100"
-          :class="{
-            'bg-primary text-white rounded-sm shadow-md': activeMonth == index,
-            'font-medium text-gray-500': activeMonth != index,
-          }"
-          @click="activeMonth = index"
+      <!-- Delete Modal -->
+      <base-modal
+        title=""
+        :modal-active="modalDelActive"
+        @close-modal="modalDelActive = !modalDelActive"
+        hide-buttons
+      >
+        <div
+          class="flex flex-col items-center justify-center space-y-8 max-w-md mx-auto text-center text-onyx-lighter"
         >
-          {{ month }}
-        </li>
-      </ul>
+          <span class="material-symbols-outlined text-8xl text-red-500">
+            cancel
+          </span>
+
+          <h2 class="font-semibold text-3xl">Are you sure?</h2>
+
+          <p>
+            Do you really want to delete these {{ name }} record? This process
+            cannot be undone.
+          </p>
+
+          <div class="flex items-center space-x-4">
+            <button
+              class="btn-cancel px-10 py-2.5"
+              @click="modalDelActive = !modalDelActive"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn-danger px-10 py-2.5"
+              @click="handleDeleteConfirm"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </base-modal>
+
+      <div class="border-2 border-primary rounded shadow">
+        <div class="flex items-center justify-between bg-primary p-4">
+          <p class="text-sm text-white font-bold capitalize">
+            {{ currentYear }}
+          </p>
+
+          <div
+            title="Create"
+            class="capitalize cursor-pointer text-sm text-white font-bold flex items-center"
+            @click="toggleModal"
+          >
+            Add {{ name }} <span class="material-symbols-outlined"> add </span>
+          </div>
+        </div>
+        <ul
+          class="grid grid-cols-3 lg:grid-cols-6 grid-rows-3 lg:grid-rows-2 gap-4 p-1"
+        >
+          <li
+            v-for="(month, index) in months"
+            :key="month"
+            class="uppercase cursor-pointer px-4 mx-auto transition-all duration-100"
+            :class="{
+              'bg-primary text-white rounded-sm shadow-md':
+                activeMonth == index,
+              'font-medium text-gray-500': activeMonth != index,
+            }"
+            @click="activeMonth = index"
+            :title="month"
+          >
+            {{ month }}
+          </li>
+        </ul>
+      </div>
     </div>
 
     <div>
       <div class="flex items-center justify-center">
+        <div v-if="filteredModuleData.length == 0" class="text-2xl">
+          No {{ name }} records for
+          <span class="capitalize">{{ months[activeMonth] }}</span>
+        </div>
         <table
-          class="min-w-full bg-white shadow-md rounded-lg overflow-hidden text-left"
+          v-else
+          class="min-w-full bg-white shadow-md rounded overflow-hidden text-left"
         >
           <caption class="hidden text-lg font-semibold mb-2 text-left">
             {{
@@ -192,10 +307,11 @@ onMounted(() => {
           <!-- Description -->
           <thead class="bg-primary text-white">
             <tr>
+              <th class="py-2 px-4">#</th>
               <th class="py-2 px-4">Name</th>
               <th class="py-2 px-4">Amount</th>
-              <th class="py-2 px-4">Month</th>
               <th class="py-2 px-4">Created</th>
+              <th class="py-2 px-4">Updated</th>
               <th class="py-2 px-4">Action</th>
             </tr>
           </thead>
@@ -205,10 +321,30 @@ onMounted(() => {
               v-for="(datum, index) in filteredModuleData"
               :key="index"
             >
+              <td class="py-6 px-4">{{ index + 1 }}</td>
               <td class="py-6 px-4">{{ datum.name }}</td>
-              <td class="py-6 px-4">{{ datum.amount }}</td>
-              <td class="py-6 px-4">{{ datum.month }}</td>
+              <td class="py-6 px-4">KES {{ formattedNumber(datum.amount) }}</td>
               <td class="py-6 px-4">{{ datum.created_on }}</td>
+              <td class="py-6 px-4">{{ datum.updated_on }}</td>
+              <td>
+                <div class="flex items-center space-x-4">
+                  <span
+                    title="Edit"
+                    @click="toggleEditModal(datum)"
+                    class="w-5 h-5 rounded-full material-symbols-outlined text-blue-500 cursor-pointer"
+                  >
+                    edit
+                  </span>
+
+                  <span
+                    title="Delete"
+                    @click="toggleDelModal(datum)"
+                    class="w-5 h-5 rounded-full material-symbols-outlined text-red-500 cursor-pointer"
+                  >
+                    delete
+                  </span>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>

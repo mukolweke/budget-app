@@ -17,15 +17,22 @@ body {
 	}
 
 	.btn {
-		@apply bg-primary text-white px-4 py-2 rounded-md text-sm flex items-center justify-center shadow-md;
+		@apply bg-primary text-white px-4 py-2 rounded-md text-sm flex items-center justify-center shadow-md hover:shadow-lg;
+	}
+
+	.btn-danger {
+		@apply bg-red-500 text-white px-4 py-2 rounded-md text-sm flex items-center justify-center shadow-md hover:shadow-lg;
+	}
+
+	.btn-cancel {
+		@apply bg-gray-300 text-white px-4 py-2 rounded-md text-sm flex items-center justify-center shadow-md hover:shadow-lg;
 	}
 
 	.btn-alt {
-		@apply px-4 py-2 hover:text-primary rounded-md text-sm flex items-center justify-center shadow-md;
+		@apply px-4 py-2 hover:text-primary rounded-md text-sm flex items-center justify-center shadow-md hover:shadow-lg;
 	}
 
 	.card {
 		@apply p-8 rounded-md bg-white shadow-md h-full min-w-[500px];
 	}
 }
-

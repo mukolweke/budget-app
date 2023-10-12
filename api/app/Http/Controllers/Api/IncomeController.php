@@ -76,24 +76,28 @@ class IncomeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  IncomeRequest  $request
+     * @param  Request  $request
      * @param  \App\Models\Income  $income
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(IncomeRequest $request, Income $income)
+    public function update(Request $request, Income $income)
     {
-        $attributes = $request->only(['month', 'amount', 'name']);
+        $attributes = $request->only(['id', 'month', 'amount', 'name']);
 
         if ($this->incomeRepo->checkIncomeExists($attributes)) {
             return response()->json(['errors' => ['name' => ['The income already exists']]], 404);
         }
 
-        $resource = $this->incomeRepo->update($attributes, $income);
+        $updated = $this->incomeRepo->update($attributes, $income);
+
+        if (!$updated) {
+            return response()->json(['errors' => ['name' => ['Unable to update income record']]], 404);
+        }
 
         return response()->json([
             'message' => 'Income created successfully',
-            'data' => IncomeTransformer::transform($resource),
+            'data' => IncomeTransformer::transform($income->fresh()),
         ], 201);
     }
 

@@ -20,7 +20,7 @@ async function handleLogout() {
           <ul>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md flex items-center transition-all duration-100"
+                class="p-3 rounded-md flex items-center transition-all duration-100 hover:bg-gray-100"
                 to="/"
               >
                 <span class="material-symbols-outlined mr-2"> home </span>
@@ -29,7 +29,7 @@ async function handleLogout() {
             </li>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md flex items-center transition-all duration-100"
+                class="p-3 rounded-md flex items-center transition-all duration-100 hover:bg-gray-100"
                 to="/income"
               >
                 <span class="material-symbols-outlined mr-2">
@@ -40,7 +40,7 @@ async function handleLogout() {
             </li>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md flex items-center transition-all duration-100"
+                class="p-3 rounded-md flex items-center transition-all duration-100 hover:bg-gray-100"
                 to="/expenses"
               >
                 <span class="material-symbols-outlined mr-2">
@@ -51,7 +51,7 @@ async function handleLogout() {
             </li>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md flex items-center transition-all duration-100"
+                class="p-3 rounded-md flex items-center transition-all duration-100 hover:bg-gray-100"
                 to="/savings"
               >
                 <span class="material-symbols-outlined mr-2"> savings </span>
@@ -60,7 +60,7 @@ async function handleLogout() {
             </li>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md flex items-center transition-all duration-100"
+                class="p-3 rounded-md flex items-center transition-all duration-100 hover:bg-gray-100"
                 to=""
               >
                 <span class="material-symbols-outlined mr-2"> target </span>
@@ -69,7 +69,7 @@ async function handleLogout() {
             </li>
             <li class="mb-6 font-semibold w-full">
               <nuxt-link
-                class="p-3 rounded-md flex items-center transition-all duration-100"
+                class="p-3 rounded-md flex items-center transition-all duration-100 hover:bg-gray-100"
                 to=""
               >
                 <span class="material-symbols-outlined mr-2"> settings </span>
@@ -101,7 +101,8 @@ async function handleLogout() {
 </template>
 
 <style scoped>
-.router-link-active.router-link-exact-active {
+.router-link-active.router-link-exact-active,
+.router-link-active.router-link-exact-active:hover {
   @apply text-white bg-primary w-full;
 }
 </style>

@@ -17,12 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::apiResource('/income', IncomeController::class);
+
+    Route::apiResource('/expense', ExpenseController::class);
+
+    Route::apiResource('/saving', SavingController::class);
 });
-
-Route::apiResource('/income', IncomeController::class);
-
-Route::apiResource('/expense', ExpenseController::class);
-
-Route::apiResource('/saving', SavingController::class);

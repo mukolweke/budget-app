@@ -49,8 +49,13 @@ class SavingRepository
      */
     public function checkSavingExists($attributes)
     {
-        return Saving::where('month', $attributes['month'])
-            ->where('name', $attributes['name'])
-            ->exists();
+        $query = Saving::where('month', $attributes['month'])
+            ->where('name', $attributes['name']);
+
+        if (isset($attributes['id'])) {
+            $query = $query->where('id', '!=', $attributes['id']);
+        }
+
+        return $query->exists();
     }
 }
