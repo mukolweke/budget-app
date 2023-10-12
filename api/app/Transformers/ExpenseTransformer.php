@@ -33,8 +33,8 @@ class ExpenseTransformer
             'name'          => $expense->name,
             'month'         => $expense->month,
             'amount'        => $expense->amount,
-            'created_on'    => Carbon::parse($expense->created_at)->format('d-m-Y g:i A'),
-            'updated_on'    => Carbon::parse($expense->updated_at)->format('d-m-Y g:i A'),
+            'created_on'    => Carbon::parse($expense->created_at)->format('d, M Y g:i A'),
+            'updated_on'    => Carbon::parse($expense->updated_at)->format('d, M Y g:i A'),
         ];
     }
 }

@@ -33,8 +33,8 @@ class IncomeTransformer
             'name'          => $income->name,
             'month'         => $income->month,
             'amount'        => $income->amount,
-            'created_on'    => Carbon::parse($income->created_at)->format('d-m-Y g:i A'),
-            'updated_on'    => Carbon::parse($income->updated_at)->format('d-m-Y g:i A'),
+            'created_on'    => Carbon::parse($income->created_at)->format('d, M Y g:i A'),
+            'updated_on'    => Carbon::parse($income->updated_at)->format('d, M Y g:i A'),
         ];
     }
 }
