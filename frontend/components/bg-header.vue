@@ -1,5 +1,11 @@
-<script setup>
+<script setup lang="ts">
+const { $listen } = useNuxtApp();
 
+let balance = ref<any>(0);
+
+$listen("total:balance", (total_balance) => {
+  balance.value = total_balance ?? 0;
+});
 </script>
 
 <template>
@@ -23,7 +29,7 @@
           </span>
           <span class="text-sm">
             Left To Spend:
-            <span class="font-bold ml-1 tracking-wider">3,000.00 KES</span>
+            <span class="font-bold ml-1 tracking-wider">KES {{ balance }}</span>
           </span>
         </li>
         <li>

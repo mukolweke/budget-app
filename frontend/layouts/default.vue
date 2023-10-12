@@ -6,6 +6,8 @@ const auth = useAuthStore();
 async function handleLogout() {
   await auth.logout();
 }
+
+const { $bus } = useNuxtApp()
 </script>
 
 <template>

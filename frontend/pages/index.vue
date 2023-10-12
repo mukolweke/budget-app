@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const { $event } = useNuxtApp();
 import { useDateMixin } from "~/mixins/dateMixin";
 import { useAuthStore } from "~/stores/useAuthStore";
 
@@ -59,6 +60,13 @@ async function getSummaryData() {
   const { data } = await useApiFetch(`/api/dash-summary`, {});
 
   summaryAmounts.value = data.value as SummaryType;
+
+  // to notify the entire application the balance.
+  $event(
+    "total:balance",
+    summaryAmounts.value.total_income -
+      (summaryAmounts.value.total_expense + summaryAmounts.value.total_saving)
+  );
 }
 
 const assets = [
