@@ -1,26 +1,9 @@
 <script setup>
 import numeral from 'numeral';
+import { useDateMixin } from "~/mixins/dateMixin";
 
-const currentDate = new Date();
-const currentMonth = currentDate.getMonth();
-const currentYear = currentDate.getFullYear();
+const { months, currentMonth, currentYear, activeMonth } = useDateMixin();
 
-const months = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
-
-let activeMonth = ref(currentMonth);
 let activeRecord = ref({});
 
 const props = defineProps({

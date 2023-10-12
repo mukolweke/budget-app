@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useDateMixin } from "~/mixins/dateMixin";
 import { useAuthStore } from "~/stores/useAuthStore";
 
 definePageMeta({
@@ -7,24 +8,23 @@ definePageMeta({
 
 const auth = useAuthStore();
 
-let currentTime = new Date();
-
-const timeOfDay = computed(() => {
-  const currentHour = currentTime.getHours();
-  if (currentHour >= 6 && currentHour < 12) {
-    return "Morning";
-  } else if (currentHour >= 12 && currentHour < 17) {
-    return "Afternoon";
-  } else {
-    return "Evening";
-  }
-});
-
+const { months, currentMonth, timeOfDay } = useDateMixin();
 </script>
 
 <template>
   <div>
-    <h1 class="font-semibold text-xl mb-4">Good {{ timeOfDay }} {{ auth.user?.name }}!</h1>
-    <p>Here's summary of this months budget</p>
+    <h1 class="font-semibold text-xl mb-4 text-onyx-lighter">
+      Good {{ timeOfDay }} {{ auth.user?.name }}!
+    </h1>
+    <p class="text-onyx-lightest mb-8">
+      Here's summary of
+      <span class="capitalize">{{ months[currentMonth] }}</span> budget
+    </p>
+
+    <div class="flex items-center space-x-8 w-full">
+      <div class="card w-1/3">Card</div>
+      <div class="card w-1/3">Card</div>
+      <div class="card w-1/3">Card</div>
+    </div>
   </div>
 </template>

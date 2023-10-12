@@ -1,4 +1,6 @@
 <script setup>
+import { useDateMixin } from "~/mixins/dateMixin";
+
 defineProps({
   modelValue: String,
   placeholder: String,
@@ -10,8 +12,7 @@ defineProps({
   currentMonth: Number,
 });
 
-const currentDate = new Date();
-const currentMonth = currentDate.getMonth();
+const { months, currentMonth } = useDateMixin();
 
 let showDropdown = ref(false);
 
@@ -21,21 +22,6 @@ const updateValue = (month) => {
   showDropdown.value = !showDropdown.value;
   emit('update:model-value', month)
 }
-
-const months = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
 
 </script>
 
@@ -70,13 +56,14 @@ const months = [
       >
         <div class="grid grid-cols-4">
           <button
-            v-for="month, index in months"
+            v-for="(month, index) in months"
             :key="month"
             class="p-3 cursor-pointer border capitalize transition duration-150 font-medium border-gray-200 text-center text-sm"
             @click="updateValue(month)"
             :disabled="currentMonth > index"
             :class="{
-              'bg-gray-100 hover:bg-gray-100 hover:text-onyx': currentMonth > index,
+              'bg-gray-100 hover:bg-gray-100 hover:text-onyx':
+                currentMonth > index,
               ' hover:bg-primary hover:text-white': currentMonth < index,
               'bg-primary text-white hover:bg-primary': modelValue == month,
             }"
