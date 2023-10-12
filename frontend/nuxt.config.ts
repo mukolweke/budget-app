@@ -12,6 +12,7 @@ export default defineNuxtConfig({
 	modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss'],
 
 	app: {
+		pageTransition: { name: 'page', mode: 'out-in' },
 		head: {
 			title: 'Budget Buddy',
 			meta: [

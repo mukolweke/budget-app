@@ -36,3 +36,12 @@ body {
 		@apply p-8 rounded-md bg-white shadow-md h-full;
 	}
 }
+
+.page-enter-active,
+.page-leave-active {
+	transition: all 0.3s;
+}
+.page-enter-from,
+.page-leave-to {
+	opacity: 0;
+}
