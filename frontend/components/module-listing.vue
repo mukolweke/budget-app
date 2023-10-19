@@ -4,6 +4,15 @@ import { useDateMixin } from "~/mixins/dateMixin";
 
 const { months, currentMonth, currentYear, activeMonth, currentDateTime } = useDateMixin();
 
+const {
+  intent,
+  message,
+  showSuccessAlert,
+  showDangerAlert,
+  toggleSuccessAlert,
+  toggleDangerAlert,
+} = useAlert();
+
 let activeRecord = ref({});
 
 const props = defineProps({
@@ -29,8 +38,8 @@ const toggleModal = () => {
 };
 
 // Toggle Delete Module Modal
-const toggleDelModal = (datum) => {
-  activeRecord.value = datum;
+const toggleDelModal = (datum = null) => {
+  if (datum) activeRecord.value = datum;
   modalDelActive.value = !modalDelActive.value
 };
 
@@ -105,9 +114,10 @@ let getTotalValue = computed(() => {
 
 // Handle the delete action
 const handleDeleteConfirm = async () => {
-  const { error } = await deleteModule(activeRecord.value);
+  const { data, error } = await deleteModule(activeRecord.value);
 
   if (!error.value) {
+    toggleDangerAlert(data.value.message);
     toggleDelModal();
     getModuleData();
   };
@@ -117,9 +127,10 @@ const handleDeleteConfirm = async () => {
 const handleConfirm = async () => {
   submittingForm.value = true;
 
-  const { error } = await saveModule(moduleForm.value);
+  const { data, error } = await saveModule(moduleForm.value);
 
   if (!error.value) {
+    toggleSuccessAlert(data.value.message);
     toggleModal();
     getModuleData();
   };
@@ -140,6 +151,24 @@ onMounted(() => {
 
 <template>
   <div>
+    <!-- Alerts -->
+    <alert
+      :intent="intent"
+      :message="message"
+      title="Success Alert"
+      :show="showSuccessAlert"
+      :on-dismiss="() => toggleSuccessAlert()"
+    />
+
+    <alert
+      :intent="intent"
+      :message="message"
+      title="Danger Alert"
+      :show="showDangerAlert"
+      :on-dismiss="() => toggleDangerAlert()"
+    />
+    <!-- End of alerts -->
+
     <div class="my-10">
       <base-modal
         :title="(activeRecord.id ? 'Edit ' : 'Add ') + name"
@@ -339,7 +368,9 @@ onMounted(() => {
                 <p class="font-bold">Total</p>
               </td>
               <td class="py-6 px-4">
-                <p class="font-bold">KES {{ formattedNumber(getTotalValue) }}</p>
+                <p class="font-bold">
+                  KES {{ formattedNumber(getTotalValue) }}
+                </p>
               </td>
               <td class="py-6 px-4">
                 <p class="font-bold">{{ currentDateTime }}</p>
