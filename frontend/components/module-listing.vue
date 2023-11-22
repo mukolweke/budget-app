@@ -169,7 +169,7 @@ onMounted(() => {
     />
     <!-- End of alerts -->
 
-    <div class="my-10">
+    <div>
       <base-modal
         :title="(activeRecord.id ? 'Edit ' : 'Add ') + name"
         :modal-active="modalActive"
@@ -269,11 +269,11 @@ onMounted(() => {
         </div>
       </base-modal>
 
-      <div class="border-2 border-primary rounded shadow">
-        <div class="flex items-center justify-between bg-primary p-4">
-          <p class="text-sm text-white font-bold capitalize">
-            {{ currentYear }}
-          </p>
+      <div class="">
+        <div class="flex items-center justify-between py-4">
+          <h1 class="mb-3 text-90 font-normal text-2xl capitalize">
+            {{ name }}
+          </h1>
 
           <div
             title="Create"
@@ -283,32 +283,24 @@ onMounted(() => {
             Add {{ name }} <span class="material-symbols-outlined"> add </span>
           </div>
         </div>
-        <ul
-          class="grid grid-cols-3 lg:grid-cols-6 grid-rows-3 lg:grid-rows-2 gap-4 p-1"
-        >
-          <li
-            v-for="(month, index) in months"
-            :key="month"
-            class="uppercase cursor-pointer px-4 mx-auto transition-all duration-100"
-            :class="{
-              'bg-primary text-white rounded-sm shadow-md':
-                activeMonth == index,
-              'font-medium text-gray-500': activeMonth != index,
-            }"
-            @click="activeMonth = index"
-            :title="month"
-          >
-            {{ month }}
-          </li>
-        </ul>
       </div>
     </div>
 
     <div>
       <div class="flex items-center justify-center">
-        <div v-if="filteredModuleData.length == 0" class="text-2xl">
-          No {{ name }} records for
-          <span class="capitalize">{{ months[activeMonth] }}</span>
+        <div
+          v-if="filteredModuleData.length == 0"
+          class="text-center w-full bg-white rounded overflow-hidden py-20 shadow-md"
+        >
+          <div class="mb-3">
+            <span class="material-symbols-outlined text-6xl text-onyx-lightest">
+              data_table
+            </span>
+          </div>
+          <p class="text-base text-80 font-normal mb-6 text-onyx-lightest">
+            No {{ name }} matched the given criteria for
+            <span class="">{{ months[activeMonth] }}</span>
+          </p>
         </div>
         <table
           v-else

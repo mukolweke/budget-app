@@ -7,18 +7,18 @@ export function useDateMixin() {
 	const currentYear = currentDate.getFullYear()
 
 	const months = [
-		'january',
-		'february',
-		'march',
-		'april',
+		'jan',
+		'feb',
+		'mar',
+		'apr',
 		'may',
-		'june',
-		'july',
-		'august',
-		'september',
-		'october',
-		'november',
-		'december',
+		'jun',
+		'jul',
+		'aug',
+		'sept',
+		'oct',
+		'nov',
+		'dec',
 	]
 
 	let activeMonth = ref(currentMonth)

@@ -1,12 +1,4 @@
 <script lang="ts" setup>
-import { useAuthStore } from "~/stores/useAuthStore";
-
-const auth = useAuthStore();
-
-async function handleLogout() {
-  await auth.logout();
-}
-
 const { getSummaryData, summaryAmounts } = useSummary();
 
 onMounted(() => {
@@ -84,15 +76,17 @@ onMounted(() => {
                 Settings
               </nuxt-link>
             </li>
-            <li class="mb-6 font-semibold w-full">
-              <button
+            <li class="mb-6 font-semibold w-full mt-[100%]">
+              <!-- <button
                 class="btn shadow-none justify-start w-full text-primary flex items-center p-3 bg-transparent hover:bg-gray-100 focus:text-primary"
-                v-if="auth.isLoggedIn"
-                @click="handleLogout"
+
               >
                 <span class="material-symbols-outlined mr-2"> logout </span>
                 Logout
-              </button>
+              </button> -->
+              <div>
+                <calender/>
+              </div>
             </li>
           </ul>
         </aside>

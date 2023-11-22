@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useAuthStore } from "~/stores/useAuthStore";
+
 const { balance } = useSummary();
 
 // const { $listen } = useNuxtApp();
@@ -8,6 +10,12 @@ const { balance } = useSummary();
 // $listen("total:balance", (total_balance) => {
 //   balance.value = total_balance ?? 0;
 // });
+
+const auth = useAuthStore();
+
+async function handleLogout() {
+  await auth.logout();
+}
 </script>
 
 <template>
@@ -24,8 +32,8 @@ const { balance } = useSummary();
         Budget Buddy
       </nuxt-link>
 
-      <ul class="flex items-center gap-4">
-        <li class="flex items-center">
+      <ul class="flex items-center">
+        <li class="flex items-center mr-2">
           <span class="material-symbols-outlined text-primary mr-2">
             account_balance_wallet
           </span>
@@ -35,8 +43,20 @@ const { balance } = useSummary();
           </span>
         </li>
         <li>
-          <span class="hover:text-primary p-2.5 rounded-full cursor-pointer">
+          <span
+            title="notifications"
+            class="hover:text-primary p-2 py-2.5 rounded-full cursor-pointer"
+          >
             <span class="material-symbols-outlined"> notifications </span>
+          </span>
+        </li>
+        <li>
+          <span
+            title="logout"
+            class="hover:text-primary p-2 py-2.5 rounded-full cursor-pointer"
+            @click="handleLogout"
+          >
+            <span class="material-symbols-outlined"> logout </span>
           </span>
         </li>
       </ul>
