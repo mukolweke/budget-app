@@ -5,8 +5,9 @@ import { format } from 'date-fns'
 
 export const useDateStore = defineStore('date', () => {
 	const currentDate = new Date()
-	let currentMonth = ref<number>(new Date().getMonth())
+	const currentMonth = ref<number>(new Date().getMonth())
 	const currentYear = new Date().getFullYear()
+	let selectedMonthIndex = ref<number | null>(currentMonth.value)
 	const months = [
 		'jan',
 		'feb',
@@ -35,17 +36,18 @@ export const useDateStore = defineStore('date', () => {
 
 	const currentDateTime = format(currentDate, 'dd, MMM yyyy hh:mm a')
 
-    let activeMonth = ref<string>(months[currentMonth.value])
+	let activeMonth = ref<string>(months[currentMonth.value])
 
 	const updateCurrentMonth = (month: number) => {
-		currentMonth.value = month // /index
-		activeMonth.value = months[currentMonth.value] // name
-    }
+		selectedMonthIndex.value = month // /index
+		activeMonth.value = months[month] // name
+	}
 
 	return {
 		months,
 		currentMonth,
 		activeMonth,
+		selectedMonthIndex,
 		currentYear,
 		timeOfDay,
 		currentDateTime,

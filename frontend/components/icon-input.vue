@@ -40,7 +40,7 @@ const updateValue = (event) => {
         class="border border-gray-300 placeholder:text-gray-300 text-sm rounded focus:outline-primary block w-full pl-10 p-3"
         :placeholder="placeholder"
         :disabled="disabled"
-        :class="{ 'bg-gray-200': disabled }"
+        :class="{ 'bg-gray-100': disabled }"
       />
     </div>
 

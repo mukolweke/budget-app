@@ -61,7 +61,7 @@ onMounted(() => {
       </div>
 
       <div
-        :class="{ 'text-gray-300': !modelValue, 'bg-gray-200': disabled }"
+        :class="{ 'text-gray-300': !modelValue, 'bg-gray-100': disabled }"
         class="border cursor-pointer capitalize border-gray-300 text-sm rounded focus:outline-primary block w-full pl-10 p-3"
         @click="showDropdown = !showDropdown"
       >
@@ -96,7 +96,7 @@ onMounted(() => {
       {{ error[0] }}
     </div>
 
-    <div class="text-[10px] text-gray-500 mt-1" v-if="helpText">
+    <div class="text-xs text-gray-500 mt-1" v-if="helpText">
       {{ helpText }}
     </div>
   </div>

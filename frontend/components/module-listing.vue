@@ -144,6 +144,10 @@ const formattedNumber = (amount) => {
   return numeral(amount).format('0,0.00');
 }
 
+const activeMonthInPast = computed(() => {
+  return date.selectedMonthIndex < date.currentMonth;
+})
+
 onMounted(() => {
   getModuleData();
 })
@@ -171,13 +175,18 @@ onMounted(() => {
 
     <div>
       <base-modal
-        :title="(activeRecord.id ? 'Edit ' : 'Add ') + name"
+        :title="(activeRecord.id ? 'Edit ' : 'Create ') + name"
         :modal-active="modalActive"
         @close-modal="toggleModal"
         @confirm-modal="handleConfirm"
+        :disabled="activeMonthInPast"
       >
         <div class="text-black">
           <p class="mb-4">Please fill the form below:</p>
+
+          <div class="text-xs bg-yellow-200 rounded font-medium p-2 my-1" v-if="activeMonthInPast">
+            You won't be able to create {{ name }} because it's selected month is in the past.
+          </div>
 
           <!-- Module Form -->
           <div class="w-[500px]">
@@ -189,6 +198,7 @@ onMounted(() => {
                 id="name"
                 placeholder="John Tyler"
                 :error="moduleForm.errors.name"
+                :disabled="activeMonthInPast"
               >
                 <!-- icon -->
                 {{
@@ -210,6 +220,7 @@ onMounted(() => {
                 type-val="number"
                 placeholder="2000.00"
                 :error="moduleForm.errors.amount"
+                :disabled="activeMonthInPast"
               >
                 <!-- icon -->
                 monetization_on
@@ -225,6 +236,7 @@ onMounted(() => {
                 id="month"
                 placeholder="Select Month"
                 :error="moduleForm.errors.month"
+                :disabled="activeMonthInPast"
               ></month-picker>
             </div>
           </div>

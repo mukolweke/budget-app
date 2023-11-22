@@ -12,9 +12,9 @@ const date = useDateStore();
         :key="month"
         class="uppercase cursor-pointer px-4 mx-auto transition-all duration-100"
         :class="{
-          'text-primary font-bold': date.currentMonth == index,
+          'text-primary font-bold': date.selectedMonthIndex == index,
           'font-medium text-gray-500 hover:text-primary':
-            date.currentMonth != index,
+            date.selectedMonthIndex != index,
         }"
         @click="date.updateCurrentMonth(index)"
         :title="month"

@@ -3,6 +3,7 @@ defineProps({
   modalActive: Boolean,
   title: String,
   hideButtons: Boolean,
+  disabled: Boolean,
 });
 
 defineEmits(["close-modal", "confirm-modal"]);
@@ -51,7 +52,9 @@ defineEmits(["close-modal", "confirm-modal"]);
               </button>
               <button
                 class="py-2 font-medium px-6 btn"
+                :class="{ 'bg-primary/50': disabled }"
                 @click="$emit('confirm-modal')"
+                :disabled="disabled"
               >
                 Save
               </button>
