@@ -2,7 +2,7 @@
 import numeral from 'numeral';
 import { useDateMixin } from "~/mixins/dateMixin";
 
-const { months, currentMonth, currentYear, activeMonth, currentDateTime } = useDateMixin();
+const { months, currentMonth, activeMonth, currentDateTime } = useDateMixin();
 
 const {
   intent,
@@ -270,17 +270,17 @@ onMounted(() => {
       </base-modal>
 
       <div class="">
-        <div class="flex items-center justify-between py-4">
-          <h1 class="mb-3 text-90 font-normal text-2xl capitalize">
+        <div class="flex items-center justify-between py-4 mb-3">
+          <h1 class="text-90 font-normal text-2xl capitalize">
             {{ name }}
           </h1>
 
           <div
-            title="Create"
-            class="capitalize cursor-pointer text-sm text-white font-bold flex items-center"
+            :title="'Create' + name"
+            class="capitalize cursor-pointer btn btn-default btn-primary bg-primary hover:bg-primary/90 font-bold"
             @click="toggleModal"
           >
-            Add {{ name }} <span class="material-symbols-outlined"> add </span>
+            Create {{ name }}
           </div>
         </div>
       </div>
@@ -298,7 +298,7 @@ onMounted(() => {
             </span>
           </div>
           <p class="text-base text-80 font-normal mb-6 text-onyx-lightest">
-            No {{ name }} matched the given criteria for
+            No {{ name }} matched the given criteria for {{ activeMonth }}
             <span class="">{{ months[activeMonth] }}</span>
           </p>
         </div>

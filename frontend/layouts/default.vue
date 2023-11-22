@@ -3,7 +3,6 @@ const { getSummaryData, summaryAmounts } = useSummary();
 
 onMounted(() => {
   getSummaryData();
-  console.log("summaryAmounts", summaryAmounts.value);
 });
 </script>
 

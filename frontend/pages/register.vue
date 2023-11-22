@@ -39,7 +39,6 @@ async function handleRegister() {
     return navigateTo("/");
   }
 
-  console.log("register error", error);
 }
 </script>
 

@@ -38,7 +38,7 @@ export function useSummary<T>() {
 
 		try {
 			const { data } = await useApiFetch('/api/dash-summary', {})
-			console.log('data', data.value);
+			// console.log('data', data.value);
             // if (isSummaryType(data.value)) {
 			// summaryAmounts.value = data.value;
 				// balance.value = calculateBalance()

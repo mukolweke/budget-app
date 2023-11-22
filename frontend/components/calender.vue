@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { useDateMixin } from "~/mixins/dateMixin";
 
-const { months, currentMonth, currentYear, activeMonth, currentDateTime } =
-  useDateMixin();
+const {
+  months,
+  currentMonth,
+  updateCurrentMonth,
+  activeMonth,
+  currentDateTime,
+} = useDateMixin();
 </script>
 
 <template>
@@ -16,7 +21,7 @@ const { months, currentMonth, currentYear, activeMonth, currentDateTime } =
           'text-primary font-bold': activeMonth == index,
           'font-medium text-gray-500 hover:text-primary': activeMonth != index,
         }"
-        @click="activeMonth = index"
+        @click="updateCurrentMonth(index)"
         :title="month"
       >
         {{ month }}

@@ -3,7 +3,8 @@ import { format } from 'date-fns'
 
 export function useDateMixin() {
 	const currentDate = new Date()
-	const currentMonth = currentDate.getMonth()
+	const currentMonth = ref(currentDate.getMonth());
+	
 	const currentYear = currentDate.getFullYear()
 
 	const months = [
@@ -36,6 +37,10 @@ export function useDateMixin() {
 
 	const currentDateTime = format(currentDate, 'dd, MMM yyyy hh:mm a')
 
+	const updateCurrentMonth = (month: number) => {
+		currentMonth.value = month // Update the value of the reactive reference
+	}
+
 	return {
 		currentMonth,
 		months,
@@ -43,5 +48,6 @@ export function useDateMixin() {
 		activeMonth,
 		timeOfDay,
 		currentDateTime,
+		updateCurrentMonth,
 	}
 }
