@@ -1,5 +1,7 @@
 <script setup>
-import { useDateMixin } from "~/mixins/dateMixin";
+import { useDateStore } from "~/stores/useDateStore";
+
+const date = useDateStore();
 
 defineProps({
   modelValue: String,
@@ -11,8 +13,6 @@ defineProps({
   disabled: Boolean,
   currentMonth: Number,
 });
-
-const { months, currentMonth } = useDateMixin();
 
 let showDropdown = ref(false);
 
@@ -56,15 +56,15 @@ const updateValue = (month) => {
       >
         <div class="grid grid-cols-4">
           <button
-            v-for="(month, index) in months"
+            v-for="(month, index) in date.months"
             :key="month"
             class="p-3 cursor-pointer border capitalize transition duration-150 font-medium border-gray-200 text-center text-sm"
             @click="updateValue(month)"
-            :disabled="currentMonth > index"
+            :disabled="date.currentMonth > index"
             :class="{
               'bg-gray-100 hover:bg-gray-100 hover:text-onyx':
-                currentMonth > index,
-              ' hover:bg-primary hover:text-white': currentMonth < index,
+                date.currentMonth > index,
+              ' hover:bg-primary hover:text-white': date.currentMonth < index,
               'bg-primary text-white hover:bg-primary': modelValue == month,
             }"
           >

@@ -1,8 +1,8 @@
 <script setup>
 import numeral from 'numeral';
-import { useDateMixin } from "~/mixins/dateMixin";
+import { useDateStore } from '~/stores/useDateStore';
 
-const { months, currentMonth, activeMonth, currentDateTime } = useDateMixin();
+const date = useDateStore();
 
 const {
   intent,
@@ -26,14 +26,14 @@ let modalDelActive = ref(false);
 let moduleForm = ref({
   name: "",
   amount: "",
-  month: months[activeMonth.value],
+  month: date.activeMonth,
   errors: {},
 });
 
 // Toggle Manage Module Modal
 const toggleModal = () => {
   activeRecord.value = {}
-  moduleForm.value.month = activeMonth.value >= currentMonth ? months[activeMonth.value] : months[currentMonth]
+  moduleForm.value.month = ''//todo:: activeMonth.value >= currentMonth ? months[activeMonth.value] : months[currentMonth]
   modalActive.value = !modalActive.value
 };
 
@@ -105,7 +105,7 @@ async function getModuleData() {
 
 // Filter out the data when listing by active month
 let filteredModuleData = computed(() => {
-  return moduleData.value ? moduleData.value.filter((datum) => datum.month.startsWith(months[activeMonth.value])) : []
+  return moduleData.value ? moduleData.value.filter((datum) => datum.month.startsWith(date.months[activeMonth.value])) : []
 });
 
 let getTotalValue = computed(() => {
@@ -220,7 +220,7 @@ onMounted(() => {
             <div class="mb-4">
               <month-picker
                 :label="name + ' Month:'"
-                :current-month="currentMonth"
+                :current-month="date.currentMonth"
                 v-model="moduleForm.month"
                 id="month"
                 placeholder="Select Month"
@@ -272,7 +272,7 @@ onMounted(() => {
       <div class="">
         <div class="flex items-center justify-between py-4 mb-3">
           <h1 class="text-90 font-normal text-2xl capitalize">
-            {{ name }}
+            {{ date.activeMonth }} {{ name }}
           </h1>
 
           <div
@@ -298,8 +298,8 @@ onMounted(() => {
             </span>
           </div>
           <p class="text-base text-80 font-normal mb-6 text-onyx-lightest">
-            No {{ name }} matched the given criteria for {{ activeMonth }}
-            <span class="">{{ months[activeMonth] }}</span>
+            No {{ name }} matched the given criteria for
+            <span class="">{{ date.activeMonth }}</span>
           </p>
         </div>
         <table
@@ -308,7 +308,7 @@ onMounted(() => {
         >
           <caption class="hidden text-lg font-semibold mb-2 text-left">
             {{
-              months[activeMonth]
+              date.months[activeMonth]
             }}
             Income Information
           </caption>

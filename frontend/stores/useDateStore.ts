@@ -1,12 +1,12 @@
-import { ref } from 'vue'
+// store/dateStore.ts
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 import { format } from 'date-fns'
 
-export function useDateMixin() {
+export const useDateStore = defineStore('date', () => {
 	const currentDate = new Date()
-	const currentMonth = ref(currentDate.getMonth());
-	
-	const currentYear = currentDate.getFullYear()
-
+	let currentMonth = ref<number>(new Date().getMonth())
+	const currentYear = new Date().getFullYear()
 	const months = [
 		'jan',
 		'feb',
@@ -22,8 +22,6 @@ export function useDateMixin() {
 		'dec',
 	]
 
-	let activeMonth = ref(currentMonth)
-
 	const timeOfDay = computed(() => {
 		const currentHour = currentDate.getHours()
 		if (currentHour >= 6 && currentHour < 12) {
@@ -37,17 +35,20 @@ export function useDateMixin() {
 
 	const currentDateTime = format(currentDate, 'dd, MMM yyyy hh:mm a')
 
+    let activeMonth = ref<string>(months[currentMonth.value])
+
 	const updateCurrentMonth = (month: number) => {
-		currentMonth.value = month // Update the value of the reactive reference
-	}
+		currentMonth.value = month // /index
+		activeMonth.value = months[currentMonth.value] // name
+    }
 
 	return {
-		currentMonth,
 		months,
-		currentYear,
+		currentMonth,
 		activeMonth,
+		currentYear,
 		timeOfDay,
 		currentDateTime,
 		updateCurrentMonth,
 	}
-}
+})

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { useDateMixin } from "~/mixins/dateMixin";
 import { useAuthStore } from "~/stores/useAuthStore";
+import { useDateStore } from "~/stores/useDateStore";
+
+const date = useDateStore();
 
 definePageMeta({
   middleware: ["auth"],
@@ -9,8 +11,6 @@ definePageMeta({
 const auth = useAuthStore();
 
 const { summaryAmounts } = useSummary();
-
-const { months, currentMonth, timeOfDay, currentYear } = useDateMixin();
 
 interface SummaryItem {
   name: string;
@@ -116,11 +116,11 @@ const goals = [
 <template>
   <div>
     <h1 class="font-semibold text-xl mb-4 text-onyx-lighter">
-      Good {{ timeOfDay }} {{ auth.user?.name }}!
+      Good {{ date.timeOfDay }} {{ auth.user?.name }}!
     </h1>
     <p class="text-onyx-lightest mb-8">
       Here's summary of
-      <span class="capitalize">{{ months[currentMonth] }}</span> budget
+      <span class="capitalize text-primary font-bold">{{ date.activeMonth }}</span> budget
     </p>
 
     <!-- Amount Summary Cards -->
@@ -192,7 +192,7 @@ const goals = [
       </div>
       <div class="card w-1/3">
         <h4 class="font-semibold text-xl mb-4 text-onyx-lighter">
-          Goals {{ currentYear }}
+          Goals {{ date.currentYear }}
         </h4>
 
         <ul class="max-h-[350px] overflow-auto">

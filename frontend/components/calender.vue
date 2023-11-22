@@ -1,27 +1,22 @@
 <script setup lang="ts">
-import { useDateMixin } from "~/mixins/dateMixin";
+import { useDateStore } from "~/stores/useDateStore";
 
-const {
-  months,
-  currentMonth,
-  updateCurrentMonth,
-  activeMonth,
-  currentDateTime,
-} = useDateMixin();
+const date = useDateStore();
 </script>
 
 <template>
   <div>
     <ul class="grid grid-cols-3 grid-rows-3 gap-4">
       <li
-        v-for="(month, index) in months"
+        v-for="(month, index) in date.months"
         :key="month"
         class="uppercase cursor-pointer px-4 mx-auto transition-all duration-100"
         :class="{
-          'text-primary font-bold': activeMonth == index,
-          'font-medium text-gray-500 hover:text-primary': activeMonth != index,
+          'text-primary font-bold': date.currentMonth == index,
+          'font-medium text-gray-500 hover:text-primary':
+            date.currentMonth != index,
         }"
-        @click="updateCurrentMonth(index)"
+        @click="date.updateCurrentMonth(index)"
         :title="month"
       >
         {{ month }}
