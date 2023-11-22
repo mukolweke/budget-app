@@ -1,11 +1,13 @@
 <script setup lang="ts">
-const { $listen } = useNuxtApp();
+const { balance } = useSummary();
 
-let balance = ref<any>(0);
+// const { $listen } = useNuxtApp();
 
-$listen("total:balance", (total_balance) => {
-  balance.value = total_balance ?? 0;
-});
+// let balance = ref<any>(0);
+
+// $listen("total:balance", (total_balance) => {
+//   balance.value = total_balance ?? 0;
+// });
 </script>
 
 <template>

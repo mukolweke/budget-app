@@ -7,7 +7,12 @@ async function handleLogout() {
   await auth.logout();
 }
 
-const { $bus } = useNuxtApp()
+const { getSummaryData, summaryAmounts } = useSummary();
+
+onMounted(() => {
+  getSummaryData();
+  console.log("summaryAmounts", summaryAmounts.value);
+});
 </script>
 
 <template>

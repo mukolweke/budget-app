@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-const { $event } = useNuxtApp();
 import { useDateMixin } from "~/mixins/dateMixin";
 import { useAuthStore } from "~/stores/useAuthStore";
 
@@ -9,6 +8,8 @@ definePageMeta({
 
 const auth = useAuthStore();
 
+const { summaryAmounts } = useSummary();
+
 const { months, currentMonth, timeOfDay, currentYear } = useDateMixin();
 
 interface SummaryItem {
@@ -17,17 +18,9 @@ interface SummaryItem {
   amount: string;
 }
 
-type SummaryType = {
-  total_income: number;
-  total_expense: number;
-  total_saving: number;
-};
-
-// Create a ref for the summary data
-const summaryAmounts = ref<SummaryType>();
-
 // Create a computed property for the summary items
 const summaries = computed<SummaryItem[]>(() => {
+  console.log('summaries', summaryAmounts.value);
   return summaryAmounts.value
     ? [
         {
@@ -48,26 +41,6 @@ const summaries = computed<SummaryItem[]>(() => {
       ]
     : [];
 });
-
-onMounted(() => {
-  getSummaryData();
-});
-
-// Fetch the summary data
-async function getSummaryData() {
-  await useApiFetch("/sanctum/csrf-cookie");
-
-  const { data } = await useApiFetch(`/api/dash-summary`, {});
-
-  summaryAmounts.value = data.value as SummaryType;
-
-  // to notify the entire application the balance.
-  $event(
-    "total:balance",
-    summaryAmounts.value.total_income -
-      (summaryAmounts.value.total_expense + summaryAmounts.value.total_saving)
-  );
-}
 
 const assets = [
   {
