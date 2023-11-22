@@ -23,12 +23,30 @@ const updateValue = (month) => {
   emit('update:model-value', month)
 }
 
+const containerRef = ref(null);
+
+onMounted(() => {
+  // Event listener to check for clicks outside the container
+  const handleClickOutside = (event) => {
+    if (!containerRef.value.contains(event.target)) {
+      showDropdown.value = false;
+    }
+  };
+
+  document.addEventListener('click', handleClickOutside);
+
+  // Clean up the event listener on component unmount
+  return () => {
+    document.removeEventListener('click', handleClickOutside);
+  };
+});
+
 </script>
 
 <template>
-  <div>
-    <label :for="inputId" class="font-semibold text-xs capitalize"
-      >{{ label }}
+  <div ref="containerRef">
+    <label :for="inputId" class="font-semibold text-xs capitalize">
+      {{ label }}
     </label>
     <div class="relative">
       <div
