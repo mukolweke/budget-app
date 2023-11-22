@@ -1,21 +1,24 @@
-<script setup lang="ts">
+<script setup>
+import numeral from 'numeral';
 import { useAuthStore } from "~/stores/useAuthStore";
 
-const { balance } = useSummary();
+const { $listen } = useNuxtApp();
 
-// const { $listen } = useNuxtApp();
+let balance = ref(0);
 
-// let balance = ref<any>(0);
-
-// $listen("total:balance", (total_balance) => {
-//   balance.value = total_balance ?? 0;
-// });
+$listen("total:balance", (total_balance) => {
+  balance.value = total_balance ?? 0;
+});
 
 const auth = useAuthStore();
 
 async function handleLogout() {
   await auth.logout();
 }
+
+const formattedNumber = (amount) => {
+  return numeral(amount).format('0,0.00');
+};
 </script>
 
 <template>
@@ -39,7 +42,9 @@ async function handleLogout() {
           </span>
           <span class="text-sm">
             Left To Spend:
-            <span class="font-bold ml-1 tracking-wider">KES {{ balance }}</span>
+            <span class="font-bold ml-1 tracking-wider"
+              >KES {{ formattedNumber(balance) }}</span
+            >
           </span>
         </li>
         <li>

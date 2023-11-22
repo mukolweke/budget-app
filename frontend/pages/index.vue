@@ -10,7 +10,17 @@ definePageMeta({
 
 const auth = useAuthStore();
 
-const { summaryAmounts } = useSummary();
+interface SummaryType {
+  total_income: number;
+  total_expense: number;
+  total_saving: number;
+}
+
+const summaryAmounts = ref<SummaryType>({
+  total_income: 0,
+  total_expense: 0,
+  total_saving: 0,
+});
 
 interface SummaryItem {
   name: string;
@@ -18,9 +28,57 @@ interface SummaryItem {
   amount: string;
 }
 
+onMounted(() => {
+  getSummaryAmounts();
+});
+
+const getSummaryAmounts = async () => {
+  await useApiFetch("/sanctum/csrf-cookie");
+
+  try {
+    const { data } = await useApiFetch(
+      `/api/dash-summary?month=${date.activeMonth}`,
+      {}
+    );
+
+    if (isSummaryType(data.value)) {
+      summaryAmounts.value = data.value;
+      calculateBalance();
+    } else {
+      console.error("Invalid summary data received:", data);
+    }
+  } catch (error) {
+    console.error("Error fetching summary data:", error);
+  }
+};
+
+const { $event } = useNuxtApp();
+
+const calculateBalance = () => {
+  const balance =
+    summaryAmounts.value.total_income -
+    (summaryAmounts.value.total_expense + summaryAmounts.value.total_saving);
+
+  $event("total:balance", balance);
+};
+
+interface SummaryType {
+  total_income: number;
+  total_expense: number;
+  total_saving: number;
+}
+
+function isSummaryType(obj: any): obj is SummaryType {
+  return (
+    typeof obj === "object" &&
+    "total_income" in obj &&
+    "total_expense" in obj &&
+    "total_saving" in obj
+  );
+}
+
 // Create a computed property for the summary items
 const summaries = computed<SummaryItem[]>(() => {
-  console.log('summaryAmounts', summaryAmounts.value)
   return summaryAmounts.value
     ? [
         {
@@ -121,7 +179,10 @@ const goals = [
     </h1>
     <p class="text-onyx-lightest mb-8">
       Here's summary of
-      <span class="capitalize text-primary font-bold">{{ date.activeMonth }}</span> budget
+      <span class="capitalize text-primary font-bold">{{
+        date.activeMonth
+      }}</span>
+      budget
     </p>
 
     <!-- Amount Summary Cards -->

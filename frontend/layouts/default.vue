@@ -1,13 +1,4 @@
 <script lang="ts" setup>
-import { useDateStore } from "~/stores/useDateStore";
-
-const { getSummaryData, summaryAmounts } = useSummary();
-
-const date = useDateStore();
-
-onMounted(() => {
-  getSummaryData(date.activeMonth);
-});
 </script>
 
 <template>
@@ -88,7 +79,7 @@ onMounted(() => {
                 Logout
               </button> -->
               <div>
-                <calender/>
+                <calender />
               </div>
             </li>
           </ul>
