@@ -11,7 +11,6 @@ defineProps({
   helpText: String,
   inputId: String || null,
   disabled: Boolean,
-  currentMonth: Number,
 });
 
 let showDropdown = ref(false);

@@ -30,21 +30,21 @@ export function useSummary<T>() {
 	}
 
 	const balance = computed(() => {
-        return calculateBalance();
+		return calculateBalance()
 	})
 
-	async function getSummaryData() {
+	async function getSummaryData(month: string) {
 		await useApiFetch('/sanctum/csrf-cookie')
 
 		try {
-			const { data } = await useApiFetch('/api/dash-summary', {})
-			// console.log('data', data.value);
-            // if (isSummaryType(data.value)) {
-			// summaryAmounts.value = data.value;
+			const { data } = await useApiFetch(`/api/dash-summary?month=${month}`, {})
+
+			if (isSummaryType(data.value)) {
+				summaryAmounts.value = data.value
 				// balance.value = calculateBalance()
-			// } else {
-			// 	console.error('Invalid summary data received:', data)
-			// }
+			} else {
+				console.error('Invalid summary data received:', data)
+			}
 		} catch (error) {
 			console.error('Error fetching summary data:', error)
 		}

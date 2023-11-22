@@ -33,7 +33,7 @@ let moduleForm = ref({
 // Toggle Manage Module Modal
 const toggleModal = () => {
   activeRecord.value = {}
-  moduleForm.value.month = ''//todo:: activeMonth.value >= currentMonth ? months[activeMonth.value] : months[currentMonth]
+  moduleForm.value.month = date.selectedMonthIndex >= date.currentMonth ? date.months[date.selectedMonthIndex] : date.activeMonth
   modalActive.value = !modalActive.value
 };
 
@@ -105,7 +105,7 @@ async function getModuleData() {
 
 // Filter out the data when listing by active month
 let filteredModuleData = computed(() => {
-  return moduleData.value ? moduleData.value.filter((datum) => datum.month.startsWith(date.months[activeMonth.value])) : []
+  return moduleData.value ? moduleData.value.filter((datum) => datum.month.startsWith(date.activeMonth)) : []
 });
 
 let getTotalValue = computed(() => {
@@ -184,8 +184,12 @@ onMounted(() => {
         <div class="text-black">
           <p class="mb-4">Please fill the form below:</p>
 
-          <div class="text-xs bg-yellow-200 rounded font-medium p-2 my-1" v-if="activeMonthInPast">
-            You won't be able to create {{ name }} because it's selected month is in the past.
+          <div
+            class="text-xs bg-yellow-200 rounded font-medium p-2 my-1"
+            v-if="activeMonthInPast"
+          >
+            You won't be able to create {{ name }} because it's selected month
+            is in the past.
           </div>
 
           <!-- Module Form -->
@@ -231,7 +235,6 @@ onMounted(() => {
             <div class="mb-4">
               <month-picker
                 :label="name + ' Month:'"
-                :current-month="date.currentMonth"
                 v-model="moduleForm.month"
                 id="month"
                 placeholder="Select Month"

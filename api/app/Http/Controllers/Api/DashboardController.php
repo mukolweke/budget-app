@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function summary(Request $request)
     {
-        $month = $request->get('month') ?? Str::lower(date('F'));
+        $month = $request->get('month') ?? Str::lower(date('M'));
 
         $totalIncome = Income::where('month', $month)->sum('amount');
 

@@ -20,6 +20,7 @@ interface SummaryItem {
 
 // Create a computed property for the summary items
 const summaries = computed<SummaryItem[]>(() => {
+  console.log('summaryAmounts', summaryAmounts.value)
   return summaryAmounts.value
     ? [
         {
